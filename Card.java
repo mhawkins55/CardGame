@@ -1,42 +1,41 @@
-package project1test;
+package phase3;
+
+
+/*
+ * Project Name: Uno Game
+ * Author: [Your Name]
+ * Date: [Current Date]
+ * Description: This class represents a card in the Uno game.
+ */
 
 public class Card {
-    public enum Suit {
-        CLUBS, DIAMONDS, HEARTS, SPADES
+    private int number;
+    private String color;
+    
+    // Constructor to initialize a card with a number and a color
+    public Card(int number, String color) {
+        this.number = number;
+        this.color = color;
     }
-
-    public enum Rank {
-        TWO(2), THREE(3), FOUR(4), FIVE(5), SIX(6), SEVEN(7), EIGHT(8), NINE(9), TEN(10), JACK(11), QUEEN(12), KING(13), ACE(14);
-
-        private final int value;
-
-        Rank(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
+    
+    // Method to get the card's number
+    public int getNumber() {
+        return number;
     }
-
-    private Suit suit;
-    private Rank rank;
-
-    public Card(Suit suit, Rank rank) {
-        this.suit = suit;
-        this.rank = rank;
+    
+    // Method to set the card's number
+    public void setNumber(int number) {
+        this.number = number;
     }
-
-    public Suit getSuit() {
-        return suit;
+    
+    // Method to get the card's color
+    public String getColor() {
+        return color;
     }
-
-    public Rank getRank() {
-        return rank;
-    }
-
-    @Override
-    public String toString() {
-        return rank + " of " + suit;
+    
+    // Method to set the card's color
+    public void setColor(String color) {
+        this.color = color;
     }
 }
+
