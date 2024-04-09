@@ -33,3 +33,13 @@ void setColor(String color): Sets the card's color.
 Authors:
 
 Mason Hawkins
+
+
+UNO CARD GAME 
+The First Code explains the UnoGame Class
+
+Second code built Player Class
+
+In this Uno card game, when the game starts, a deck of Uno cards is shuffled and dealt to the players. The game begins with the first player taking a turn. During each player's turn, they can play cards from their hand that match either the color or number of the card on top of the discard pile. If they can't play a card, they must draw from the deck. Players try to be the first to get rid of all their cards. Once a player has no cards left, they win the game. Special cards like Skips, Reverses, and Draw Twos add twists to the game, making it more exciting and strategic. The game continues until someone empties their hand and wins! More rules and features can be added to make the game more interesting and challenging based on the official Uno rules.
+
+Mustapha Ibrahim
