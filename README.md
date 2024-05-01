@@ -27,6 +27,7 @@ Installation
 Clone or download the repository to your local machine.
 Open the project in your preferred Java IDE.
 Compile and run the UnoGame class to start the game.
+
 Contributors
 
 Mason Hawkins
