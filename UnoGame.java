@@ -1,4 +1,4 @@
-package Uno;
+package project1test;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -49,93 +49,99 @@ public class UnoGame {
         declareWinner();
     }
 
-    private void playTurn(Player player) {
-        System.out.println("\nCurrent card: " + discardPile.get(discardPile.size() - 1));
+private void playTurn(Player player) {
+    System.out.println("\nCurrent card: " + discardPile.get(discardPile.size() - 1));
+    if (player == humanPlayer) {
+        System.out.println("Your hand: " + player.getHand());
+    }
+    
+    // Check if any card can be played
+    boolean canPlayAnyCard = false;
+    for (Card card : player.getHand()) {
+        if (canPlay(card)) {
+            canPlayAnyCard = true;
+            break;
+        }
+    }
+    
+    if (canPlayAnyCard) {
         if (player == humanPlayer) {
-            System.out.println("Your hand: " + player.getHand());
-        }
-        
-        // Check if any card can be played
-        boolean canPlayAnyCard = false;
-        for (Card card : player.getHand()) {
-            if (canPlay(card)) {
-                canPlayAnyCard = true;
-                break;
-            }
-        }
-        
-        if (canPlayAnyCard) {
-            if (player == humanPlayer) {
-                System.out.println("Enter the name of the card you want to play (e.g., Red 6) or -1 to draw: ");
-                Scanner scanner = new Scanner(System.in);
-                String input = scanner.nextLine();
-                if (input.equals("-1")) {
-                    player.drawCards(1, deck.getDeck());
-                    System.out.println("You drew a card.");
-                } else {
-                    player.playCard(input, discardPile);
-                    if (input.startsWith("Draw Two") || input.startsWith("Wild Draw Four")) {
-                        humanPlayer.drawCards(input.startsWith("Draw Two") ? 2 : 4, deck.getDeck());
-                    }
-                    cardsPlayed++; // Increment cards played counter
-                }
+            System.out.println("Enter the name of the card you want to play (e.g., Red 6) or -1 to draw: ");
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.nextLine();
+            if (input.equals("-1")) {
+                player.drawCards(1, deck.getDeck());
+                System.out.println("You drew a card.");
             } else {
-                // Implement computer player's logic here
-                boolean cardPlayed = false;
-                for (Card card : player.getHand()) {
-                    if (canPlay(card)) {
-                        player.playCard(card.toString(), discardPile);
-                        if (card.getValue().startsWith("Draw Two") || card.getValue().startsWith("Wild Draw Four")) {
-                            humanPlayer.drawCards(card.getValue().startsWith("Draw Two") ? 2 : 4, deck.getDeck());
-                        }
-                        System.out.println("Computer played: " + card);
-                        cardsPlayed++; // Increment cards played counter
-                        cardPlayed = true;
-                        break;
-                    }
+                player.playCard(input, discardPile);
+                if (input.startsWith("Draw Two") || input.startsWith("Wild Draw Four")) {
+                    humanPlayer.drawCards(input.startsWith("Draw Two") ? 2 : 4, deck.getDeck());
                 }
-                if (!cardPlayed) {
-                    Card drawnCard = deck.drawCard();
-                    computerPlayer.addCard(drawnCard);
-                    if (!canPlay(drawnCard)) {
-                        System.out.println("Computer couldn't play a card. Turn skipped.");
-                    }
-                    cardsPlayed++; // Increment cards played counter
-                }
+                cardsPlayed++; // Increment cards played counter
             }
         } else {
-            Card drawnCard = deck.drawCard();
-            if (player == humanPlayer) {
-                humanPlayer.addCard(drawnCard);
-                if (!canPlay(drawnCard)) {
-                    System.out.println("You couldn't play the card. Turn skipped.");
+            // Implement computer player's logic here
+            boolean cardPlayed = false;
+            for (Card card : player.getHand()) {
+                if (canPlay(card)) {
+                    player.playCard(card.toString(), discardPile);
+                    if (card.getValue().startsWith("Draw Two") || card.getValue().startsWith("Wild Draw Four")) {
+                        humanPlayer.drawCards(card.getValue().startsWith("Draw Two") ? 2 : 4, deck.getDeck());
+                    }
+                    System.out.println("Computer played: " + card);
+                    cardsPlayed++; // Increment cards played counter
+                    cardPlayed = true;
+                    break;
                 }
-            } else {
+            }
+            if (!cardPlayed) {
+                Card drawnCard = deck.drawCard();
                 computerPlayer.addCard(drawnCard);
                 if (!canPlay(drawnCard)) {
                     System.out.println("Computer couldn't play a card. Turn skipped.");
                 }
+                cardsPlayed++; // Increment cards played counter
             }
-            cardsPlayed++; // Increment cards played counter
         }
-
-        // Check if a player has won the game
-        if (player.getHand().isEmpty()) {
-            if (player == humanPlayer) {
-                System.out.println("You Won!");
-            } else {
-                System.out.println("You Lost :(");
+    } else {
+        Card drawnCard = deck.drawCard();
+        if (player == humanPlayer) {
+            humanPlayer.addCard(drawnCard);
+            if (!canPlay(drawnCard)) {
+                System.out.println("You couldn't play the card. Turn skipped.");
             }
-            System.exit(0); // End the game
+            if (drawnCard.getValue().startsWith("Draw Two") || drawnCard.getValue().startsWith("Wild Draw Four")) {
+                humanPlayer.drawCards(drawnCard.getValue().startsWith("Draw Two") ? 2 : 4, deck.getDeck());
+            }
+        } else {
+            computerPlayer.addCard(drawnCard);
+            if (!canPlay(drawnCard)) {
+                System.out.println("Computer couldn't play a card. Turn skipped.");
+            }
+            if (drawnCard.getValue().startsWith("Draw Two") || drawnCard.getValue().startsWith("Wild Draw Four")) {
+                humanPlayer.drawCards(drawnCard.getValue().startsWith("Draw Two") ? 2 : 4, deck.getDeck());
+            }
         }
-
-        // Check if it's time to refresh the hand with remaining original cards or if a player has won
-        if (cardsPlayed >= 108 || isGameOver()) {
-            humanPlayer.refreshHand();
-            computerPlayer.refreshHand();
-            cardsPlayed = 0; // Reset cards played counter
-        }
+        cardsPlayed++; // Increment cards played counter
     }
+
+    // Check if a player has won the game
+    if (player.getHand().isEmpty()) {
+        if (player == humanPlayer) {
+            System.out.println("You Won!");
+        } else {
+            System.out.println("You Lost :(");
+        }
+        System.exit(0); // End the game
+    }
+
+    // Check if it's time to refresh the hand with remaining original cards or if a player has won
+    if (cardsPlayed >= 108 || isGameOver()) {
+        humanPlayer.refreshHand();
+        computerPlayer.refreshHand();
+        cardsPlayed = 0; // Reset cards played counter
+    }
+}
 
     private boolean canPlay(Card card) {
         Card topCard = discardPile.get(discardPile.size() - 1);

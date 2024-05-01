@@ -1,4 +1,4 @@
-package Uno;
+package project1test;
 
 import java.util.ArrayList;
 
@@ -53,5 +53,10 @@ public class Player {
     public void refreshHand() {
         hand.clear();
         hand.addAll(originalHand);
+    }
+
+    public void storeOriginalHand() {
+        originalHand.clear();
+        originalHand.addAll(hand);
     }
 }
